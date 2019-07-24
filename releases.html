@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Unreleased &#8212; sasctl 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="sasctl.utils.pymas package" href="api/sasctl.utils.pymas.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="unreleased">
+<h1>Unreleased<a class="headerlink" href="#unreleased" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div><ul class="simple">
+<li></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="v1-0-0-2019-07-24">
+<h1>v1.0.0 (2019-07-24)<a class="headerlink" href="#v1-0-0-2019-07-24" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div><p><strong>Changed</strong>
+- services are now classes instead of modules.</p>
+<blockquote>
+<div><p>Imports of services in the format <cite>import sasctl.services.model_management as mm</cite> must be
+changed to <cite>from sasctl.services import model_management as mm</cite>.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><cite>host</cite> and <cite>user</cite> parameters of <cite>Session</cite> renamed to <cite>hostname</cite> and <cite>username</cite> to align with SWAT.</p></li>
+<li><p>Only <cite>InsecureRequestWarning</cite> is suppred instead of all <cite>HTTPWarning</cite></p></li>
+</ul>
+<p><strong>Improvements</strong>
+- Added <cite>copy_analytic_store</cite> method to <cite>model_repository</cite> service
+- <cite>AuthenticationError</cite> returned instead of <cite>HTTPError</cite> if session authentication fails.</p>
+</div></blockquote>
+</div>
+<div class="section" id="v0-9-7-2019-07-18">
+<h1>v0.9.7 (2019-07-18)<a class="headerlink" href="#v0-9-7-2019-07-18" title="Permalink to this headline">¶</a></h1>
+<dl class="simple">
+<dt><strong>Improvements</strong></dt><dd><ul class="simple">
+<li><p>public_model task also defines methods mapped to MAS module steps when publishing to MAS.</p></li>
+<li><p>SSL verification can be disable with <cite>SSLREQCERT</cite> environment variable.</p></li>
+<li><p>CAs to use for validating SSL certificates can also be specified through the <cite>SSLCALISTLOC</cite> environment variable.</p></li>
+<li><p>Added <cite>execute_performance_task</cite></p></li>
+</ul>
+</dd>
+<dt><strong>Changes</strong></dt><dd><ul class="simple">
+<li><p>Updated method signature for <cite>create_performance_definition</cite> in Model Manager.</p></li>
+</ul>
+</dd>
+<dt><strong>Bugfixes</strong></dt><dd><ul class="simple">
+<li><p>register_model task no longer adds <cite>rc</cite> and <cite>msg</cite> variables from MAS to the project variables.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="v0-9-6-2019-07-15">
+<h1>v0.9.6 (2019-07-15)<a class="headerlink" href="#v0-9-6-2019-07-15" title="Permalink to this headline">¶</a></h1>
+<p>Initial public release.</p>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">sasctl</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/sasctl.html">sasctl package</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Unreleased</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#v1-0-0-2019-07-24">v1.0.0 (2019-07-24)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#v0-9-7-2019-07-18">v0.9.7 (2019-07-18)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#v0-9-6-2019-07-15">v0.9.6 (2019-07-15)</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="api/sasctl.utils.pymas.html" title="previous chapter">sasctl.utils.pymas package</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/releases.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

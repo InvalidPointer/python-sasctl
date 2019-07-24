@@ -1,0 +1,595 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sasctl package &#8212; sasctl 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="sasctl.services package" href="sasctl.services.html" />
+    <link rel="prev" title="sasctl" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="sasctl-package">
+<h1>sasctl package<a class="headerlink" href="#sasctl-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-sasctl">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-sasctl" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-sasctl.core">
+<span id="sasctl-core-module"></span><h3>sasctl.core module<a class="headerlink" href="#module-sasctl.core" title="Permalink to this headline">¶</a></h3>
+<dl class="exception">
+<dt id="sasctl.core.AuthenticationError">
+<em class="property">exception </em><code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">AuthenticationError</code><a class="reference internal" href="../_modules/sasctl/core.html#AuthenticationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.AuthenticationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sasctl.core.SasctlError" title="sasctl.core.SasctlError"><code class="xref py py-class docutils literal notranslate"><span class="pre">sasctl.core.SasctlError</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sasctl.core.HTTPBearerAuth">
+<em class="property">class </em><code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">HTTPBearerAuth</code><span class="sig-paren">(</span><em class="sig-param">token</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#HTTPBearerAuth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.HTTPBearerAuth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://2.python-requests.org/en/master/api/#requests.auth.AuthBase" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.auth.AuthBase</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sasctl.core.RestObj">
+<em class="property">class </em><code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">RestObj</code><a class="reference internal" href="../_modules/sasctl/core.html#RestObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.RestObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sasctl.core.SSLContextAdapter">
+<em class="property">class </em><code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">SSLContextAdapter</code><span class="sig-paren">(</span><em class="sig-param">pool_connections=10</em>, <em class="sig-param">pool_maxsize=10</em>, <em class="sig-param">max_retries=0</em>, <em class="sig-param">pool_block=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#SSLContextAdapter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.SSLContextAdapter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://2.python-requests.org/en/master/api/#requests.adapters.HTTPAdapter" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">requests.adapters.HTTPAdapter</span></code></a></p>
+<p>HTTPAdapter that uses the default SSL context on the machine.</p>
+<dl class="method">
+<dt id="sasctl.core.SSLContextAdapter.init_poolmanager">
+<code class="sig-name descname">init_poolmanager</code><span class="sig-paren">(</span><em class="sig-param">connections</em>, <em class="sig-param">maxsize</em>, <em class="sig-param">block=False</em>, <em class="sig-param">**pool_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#SSLContextAdapter.init_poolmanager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.SSLContextAdapter.init_poolmanager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a urllib3 PoolManager.</p>
+<p>This method should not be called from user code, and is only
+exposed for use when subclassing the
+<a class="reference external" href="https://2.python-requests.org/en/master/api/#requests.adapters.HTTPAdapter" title="(in Requests v2.22.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPAdapter</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>connections</strong> – The number of urllib3 connection pools to cache.</p></li>
+<li><p><strong>maxsize</strong> – The maximum number of connections to save in the pool.</p></li>
+<li><p><strong>block</strong> – Block when no free connections are available.</p></li>
+<li><p><strong>pool_kwargs</strong> – Extra keyword arguments used to initialize the Pool Manager.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="sasctl.core.SasctlError">
+<em class="property">exception </em><code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">SasctlError</code><a class="reference internal" href="../_modules/sasctl/core.html#SasctlError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.SasctlError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sasctl.core.Session">
+<em class="property">class </em><code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">Session</code><span class="sig-paren">(</span><em class="sig-param">hostname</em>, <em class="sig-param">username=None</em>, <em class="sig-param">password=None</em>, <em class="sig-param">authinfo=None</em>, <em class="sig-param">protocol=None</em>, <em class="sig-param">port=None</em>, <em class="sig-param">verify_ssl=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#Session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.Session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">requests.sessions.Session</span></code></p>
+<p>Establish a connection to a SAS Viya server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hostname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><em>swat.CAS</em>) – Name of the server to connect to or an established swat.CAS session.</p></li>
+<li><p><strong>username</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Username for authentication.  Not required if <cite>host</cite> is a CAS
+connection or if Kerberos is used.  If using Kerberos and an explicit
+username is desired, maybe be a string in <a class="reference external" href="mailto:'user&#37;&#52;&#48;REALM">‘user<span>&#64;</span>REALM</a>’ format.</p></li>
+<li><p><strong>password</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Password for authentication.  Not required when <cite>host</cite> is a CAS
+connection, <cite>authinfo</cite> is provided, or Kerberos is used.</p></li>
+<li><p><strong>authinfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Path to a .authinfo or .netrc file from which credentials should be
+pulled.</p></li>
+<li><p><strong>protocol</strong> (<em>{'http'</em><em>, </em><em>'https'}</em>) – Whether to use HTTP or HTTPS connections.  Defaults to <cite>https</cite>.</p></li>
+<li><p><strong>port</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – Port number for the connection if a non-standard port is used.
+Defaults to 80 or 443 depending on <cite>protocol</cite>.</p></li>
+<li><p><strong>verify_ssl</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether server-side SSL certificates should be verified.  Defaults
+to true.  Ignored for HTTP connections.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="sasctl.core.Session.message_log">
+<code class="sig-name descname">message_log</code><a class="headerlink" href="#sasctl.core.Session.message_log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="sasctl.core.Session.filters">
+<code class="sig-name descname">filters</code><a class="headerlink" href="#sasctl.core.Session.filters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="sasctl.core.Session.add_stderr_logger">
+<code class="sig-name descname">add_stderr_logger</code><span class="sig-paren">(</span><em class="sig-param">level=20</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#Session.add_stderr_logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.Session.add_stderr_logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="sasctl.core.Session.delete">
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#Session.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.Session.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a DELETE request. Returns <code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – URL for the new <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code> object.</p></li>
+<li><p><strong>**kwargs</strong> – Optional arguments that <code class="docutils literal notranslate"><span class="pre">request</span></code> takes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://2.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.22.0)">requests.Response</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="sasctl.core.Session.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#Session.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.Session.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a GET request. Returns <code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – URL for the new <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code> object.</p></li>
+<li><p><strong>**kwargs</strong> – Optional arguments that <code class="docutils literal notranslate"><span class="pre">request</span></code> takes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://2.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.22.0)">requests.Response</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="sasctl.core.Session.get_token">
+<code class="sig-name descname">get_token</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#Session.get_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.Session.get_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticates with the session host and retrieves an
+authorization token for use by subsequent requests.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a bearer token for <a class="reference internal" href="#sasctl.core.HTTPBearerAuth" title="sasctl.core.HTTPBearerAuth"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPBearerAuth</span></code></a></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#sasctl.core.AuthenticationError" title="sasctl.core.AuthenticationError"><strong>AuthenticationError</strong></a> – authentication with the host failed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="sasctl.core.Session.head">
+<code class="sig-name descname">head</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#Session.head"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.Session.head" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a HEAD request. Returns <code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – URL for the new <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code> object.</p></li>
+<li><p><strong>**kwargs</strong> – Optional arguments that <code class="docutils literal notranslate"><span class="pre">request</span></code> takes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://2.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.22.0)">requests.Response</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="sasctl.core.Session.post">
+<code class="sig-name descname">post</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#Session.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.Session.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a POST request. Returns <code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – URL for the new <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code> object.</p></li>
+<li><p><strong>data</strong> – (optional) Dictionary, list of tuples, bytes, or file-like
+object to send in the body of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code>.</p></li>
+<li><p><strong>json</strong> – (optional) json to send in the body of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code>.</p></li>
+<li><p><strong>**kwargs</strong> – Optional arguments that <code class="docutils literal notranslate"><span class="pre">request</span></code> takes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://2.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.22.0)">requests.Response</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="sasctl.core.Session.put">
+<code class="sig-name descname">put</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#Session.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.Session.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a PUT request. Returns <code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – URL for the new <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code> object.</p></li>
+<li><p><strong>data</strong> – (optional) Dictionary, list of tuples, bytes, or file-like
+object to send in the body of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code>.</p></li>
+<li><p><strong>**kwargs</strong> – Optional arguments that <code class="docutils literal notranslate"><span class="pre">request</span></code> takes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://2.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.22.0)">requests.Response</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="sasctl.core.Session.request">
+<code class="sig-name descname">request</code><span class="sig-paren">(</span><em class="sig-param">method</em>, <em class="sig-param">url</em>, <em class="sig-param">params=None</em>, <em class="sig-param">data=None</em>, <em class="sig-param">headers=None</em>, <em class="sig-param">cookies=None</em>, <em class="sig-param">files=None</em>, <em class="sig-param">auth=None</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">allow_redirects=True</em>, <em class="sig-param">proxies=None</em>, <em class="sig-param">hooks=None</em>, <em class="sig-param">stream=None</em>, <em class="sig-param">verify=None</em>, <em class="sig-param">cert=None</em>, <em class="sig-param">json=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#Session.request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.Session.request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code>, prepares it and sends it.
+Returns <code class="xref py py-class docutils literal notranslate"><span class="pre">Response</span></code> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> – method for the new <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code> object.</p></li>
+<li><p><strong>url</strong> – URL for the new <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code> object.</p></li>
+<li><p><strong>params</strong> – (optional) Dictionary or bytes to be sent in the query
+string for the <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code>.</p></li>
+<li><p><strong>data</strong> – (optional) Dictionary, list of tuples, bytes, or file-like
+object to send in the body of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code>.</p></li>
+<li><p><strong>json</strong> – (optional) json to send in the body of the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code>.</p></li>
+<li><p><strong>headers</strong> – (optional) Dictionary of HTTP Headers to send with the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code>.</p></li>
+<li><p><strong>cookies</strong> – (optional) Dict or CookieJar object to send with the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Request</span></code>.</p></li>
+<li><p><strong>files</strong> – (optional) Dictionary of <code class="docutils literal notranslate"><span class="pre">'filename':</span> <span class="pre">file-like-objects</span></code>
+for multipart encoding upload.</p></li>
+<li><p><strong>auth</strong> – (optional) Auth tuple or callable to enable
+Basic/Digest/Custom HTTP Auth.</p></li>
+<li><p><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a>) – (optional) How long to wait for the server to send
+data before giving up, as a float, or a <a class="reference external" href="https://2.python-requests.org/en/master/user/advanced/#timeouts" title="(in Requests v2.22.0)"><span class="xref std std-ref">(connect timeout,
+read timeout)</span></a> tuple.</p></li>
+<li><p><strong>allow_redirects</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – (optional) Set to True by default.</p></li>
+<li><p><strong>proxies</strong> – (optional) Dictionary mapping protocol or protocol and
+hostname to the URL of the proxy.</p></li>
+<li><p><strong>stream</strong> – (optional) whether to immediately download the response
+content. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>verify</strong> – (optional) Either a boolean, in which case it controls whether we verify
+the server’s TLS certificate, or a string, in which case it must be a path
+to a CA bundle to use. Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>cert</strong> – (optional) if String, path to ssl client cert file (.pem).
+If Tuple, (‘cert’, ‘key’) pair.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://2.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.22.0)">requests.Response</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="sasctl.core.Session.send">
+<code class="sig-name descname">send</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#Session.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.Session.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a given PreparedRequest.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://2.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.22.0)">requests.Response</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="sasctl.core.Session.username">
+<em class="property">property </em><code class="sig-name descname">username</code><a class="headerlink" href="#sasctl.core.Session.username" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="sasctl.core.TimeoutError">
+<em class="property">exception </em><code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">TimeoutError</code><a class="reference internal" href="../_modules/sasctl/core.html#TimeoutError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.TimeoutError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sasctl.core.SasctlError" title="sasctl.core.SasctlError"><code class="xref py py-class docutils literal notranslate"><span class="pre">sasctl.core.SasctlError</span></code></a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sasctl.core.current_session">
+<code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">current_session</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#current_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.current_session" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sasctl.core.delete">
+<code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sasctl.core.get">
+<code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sasctl.core.get_link">
+<code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">get_link</code><span class="sig-paren">(</span><em class="sig-param">obj</em>, <em class="sig-param">rel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#get_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.get_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get link information from a resource.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – </p></li>
+<li><p><strong>rel</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sasctl.core.head">
+<code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">head</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#head"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.head" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sasctl.core.is_uuid">
+<code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">is_uuid</code><span class="sig-paren">(</span><em class="sig-param">id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#is_uuid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.is_uuid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sasctl.core.pformat">
+<code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">pformat</code><span class="sig-paren">(</span><em class="sig-param">text</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#pformat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.pformat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sasctl.core.post">
+<code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">post</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.post" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sasctl.core.put">
+<code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">put</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.put" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sasctl.core.request">
+<code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">request</code><span class="sig-paren">(</span><em class="sig-param">verb</em>, <em class="sig-param">path</em>, <em class="sig-param">session=None</em>, <em class="sig-param">raw=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.request" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sasctl.core.request_link">
+<code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">request_link</code><span class="sig-paren">(</span><em class="sig-param">obj</em>, <em class="sig-param">rel</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#request_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.request_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request a link from a resource.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – </p></li>
+<li><p><strong>rel</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – </p></li>
+<li><p><strong>kwargs</strong> (<em>any</em>) – Passed to <a href="#id1"><span class="problematic" id="id2">:function:`request`</span></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="sasctl.core.uri_as_str">
+<code class="sig-prename descclassname">sasctl.core.</code><code class="sig-name descname">uri_as_str</code><span class="sig-paren">(</span><em class="sig-param">obj</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/core.html#uri_as_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.core.uri_as_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the URI of a resource in string format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>obj</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Strings are assumed to be URIs and are returned as is.  Dictionary
+objects will be checked for a <cite>self</cite> URI and returned if found.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Resource URI or None if not found</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sasctl.tasks">
+<span id="sasctl-tasks-module"></span><h3>sasctl.tasks module<a class="headerlink" href="#module-sasctl.tasks" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="sasctl.tasks.publish_model">
+<code class="sig-prename descclassname">sasctl.tasks.</code><code class="sig-name descname">publish_model</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">destination</em>, <em class="sig-param">code=None</em>, <em class="sig-param">max_retries=60</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/tasks.html#publish_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.tasks.publish_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Publish a model to a configured publishing destination.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – The name or id of the model, or a dictionary representation of the model.</p></li>
+<li><p><strong>destination</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – </p></li>
+<li><p><strong>code</strong> (<em>optional</em>) – </p></li>
+<li><p><strong>max_retries</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>kwargs</strong> (<em>optional</em>) – additional arguments will be passed to the underlying publish functions.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>If no code is specified, the model is assumed to be already registered in the model repository and Model Manager’s
+publishing functionality will be used.</p>
+<p>Otherwise, the model publishing API will be used.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="services/model_management.html#sasctl._services.model_management.ModelManagement.publish_model" title="sasctl._services.model_management.ModelManagement.publish_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">model_management.publish_model</span></code></a>
+<a class="reference internal" href="services/model_publish.html#sasctl._services.model_publish.ModelPublish.publish_model" title="sasctl._services.model_publish.ModelPublish.publish_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">model_publish.publish_model</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="sasctl.tasks.register_model">
+<code class="sig-prename descclassname">sasctl.tasks.</code><code class="sig-name descname">register_model</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">name</em>, <em class="sig-param">project</em>, <em class="sig-param">repository=None</em>, <em class="sig-param">input=None</em>, <em class="sig-param">version='latest'</em>, <em class="sig-param">files=None</em>, <em class="sig-param">force=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/sasctl/tasks.html#register_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl.tasks.register_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a model in the model repository.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>swat.CASTable</em><em> or </em><em>sklearn.BaseEstimator</em>) – The model to register.  If an instance of <code class="docutils literal notranslate"><span class="pre">swat.CASTable</span></code> the table is assumed to hold an ASTORE, which will
+be downloaded and used to construct the model to register.  If a scikit-learn estimator, the model will be
+pickled and uploaded to the registry and score code will be generated for publishing the model to MAS.</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Designated name for the model in the repository.</p></li>
+<li><p><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – The name or id of the project, or a dictionary representation of the project.</p></li>
+<li><p><strong>repository</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>, </em><em>optional</em>) – The name or id of the repository, or a dictionary representation of the repository.  If omitted, the default
+repository will be used.</p></li>
+<li><p><strong>input</strong> – </p></li>
+<li><p><strong>version</strong> (<em>{'new'</em><em>, </em><em>'latest'</em><em>, </em><em>int}</em><em>, </em><em>optional</em>) – Version number of the project in which the model should be created.</p></li>
+<li><p><strong>files</strong> – </p></li>
+<li><p><strong>force</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – Create dependencies such as projects and repositories if they do not already exist.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>model</strong> – The newly registered model as an instance of <code class="docutils literal notranslate"><span class="pre">RestObj</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#sasctl.core.RestObj" title="sasctl.core.RestObj">RestObj</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>If the specified model is a CAS table the model data and metadata will be written to a temporary zip file and then
+imported using model_repository.import_model_from_zip.</p>
+<p>If the specified model is from the Scikit-Learn package, the model will be created using
+model_repository.create_model and any additional files will be uploaded as content.</p>
+<p class="rubric">Examples</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sasctl.services.html">sasctl.services package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="services/cas_management.html">sasctl.services.cas_management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/concepts.html">sasctl.services.concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/data_sources.html">sasctl.services.data_sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/files.html">sasctl.services.files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/folders.html">sasctl.services.folders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/microanalytic_store.html">sasctl.services.microanalytic_store</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/model_management.html">sasctl.services.model_management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/model_publish.html">sasctl.services.model_publish</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/model_repository.html">sasctl.services.model_repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/projects.html">sasctl.services.projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/sentiment_analysis.html">sasctl.services.sentiment_analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/text_categorization.html">sasctl.services.text_categorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/text_parsing.html">sasctl.services.text_parsing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sasctl.utils.html">sasctl.utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sasctl.utils.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sasctl.utils.pymas.html">sasctl.utils.pymas package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="sasctl.utils.pymas.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sasctl.utils.pymas.html#module-sasctl.utils.pymas.core">sasctl.utils.pymas.core module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sasctl.utils.pymas.html#module-sasctl.utils.pymas.ds2">sasctl.utils.pymas.ds2 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sasctl.utils.pymas.html#module-sasctl.utils.pymas.python">sasctl.utils.pymas.python module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sasctl.utils.pymas.html#module-sasctl.utils.pymas">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sasctl.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sasctl.utils.html#module-sasctl.utils.astore">sasctl.utils.astore module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sasctl.utils.html#module-sasctl.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">sasctl</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">sasctl package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-sasctl">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html">Unreleased</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html#v1-0-0-2019-07-24">v1.0.0 (2019-07-24)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html#v0-9-7-2019-07-18">v0.9.7 (2019-07-18)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases.html#v0-9-6-2019-07-15">v0.9.6 (2019-07-15)</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">sasctl</a></li>
+      <li>Next: <a href="sasctl.services.html" title="next chapter">sasctl.services package</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/sasctl.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

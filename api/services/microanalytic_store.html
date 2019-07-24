@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sasctl.services.microanalytic_store &#8212; sasctl 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="sasctl.services.model_management" href="model_management.html" />
+    <link rel="prev" title="sasctl.services.folders" href="folders.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-sasctl._services.microanalytic_store">
+<span id="sasctl-services-microanalytic-store"></span><h1>sasctl.services.microanalytic_store<a class="headerlink" href="#module-sasctl._services.microanalytic_store" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="sasctl._services.microanalytic_store.MicroAnalyticScore">
+<em class="property">class </em><code class="sig-prename descclassname">sasctl._services.microanalytic_store.</code><code class="sig-name descname">MicroAnalyticScore</code><a class="reference internal" href="../../_modules/sasctl/_services/microanalytic_store.html#MicroAnalyticScore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl._services.microanalytic_store.MicroAnalyticScore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sasctl._services.service.Service</span></code></p>
+<p>A stateless, memory-resident, high-performance program execution
+service.</p>
+<dl class="method">
+<dt id="sasctl._services.microanalytic_store.MicroAnalyticScore.create_module">
+<code class="sig-name descname">create_module</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">description=None</em>, <em class="sig-param">source=None</em>, <em class="sig-param">language='python'</em>, <em class="sig-param">scope='public'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sasctl/_services/microanalytic_store.html#MicroAnalyticScore.create_module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl._services.microanalytic_store.MicroAnalyticScore.create_module" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – </p></li>
+<li><p><strong>description</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – </p></li>
+<li><p><strong>source</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – </p></li>
+<li><p><strong>language</strong> (<em>str { 'python'</em><em>, </em><em>'ds2' }</em>) – </p></li>
+<li><p><strong>scope</strong> (<em>str { 'public'</em><em>, </em><em>'private' }</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="sasctl._services.microanalytic_store.MicroAnalyticScore.define_steps">
+<code class="sig-name descname">define_steps</code><span class="sig-paren">(</span><em class="sig-param">module</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sasctl/_services/microanalytic_store.html#MicroAnalyticScore.define_steps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl._services.microanalytic_store.MicroAnalyticScore.define_steps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="sasctl._services.microanalytic_store.MicroAnalyticScore.execute_module_step">
+<code class="sig-name descname">execute_module_step</code><span class="sig-paren">(</span><em class="sig-param">module</em>, <em class="sig-param">step</em>, <em class="sig-param">return_dict=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sasctl/_services/microanalytic_store.html#MicroAnalyticScore.execute_module_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl._services.microanalytic_store.MicroAnalyticScore.execute_module_step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="sasctl._services.microanalytic_store.MicroAnalyticScore.get_module">
+<code class="sig-name descname">get_module</code><span class="sig-paren">(</span><em class="sig-param">module</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sasctl/_services/microanalytic_store.html#MicroAnalyticScore.get_module"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl._services.microanalytic_store.MicroAnalyticScore.get_module" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="sasctl._services.microanalytic_store.MicroAnalyticScore.get_module_step">
+<code class="sig-name descname">get_module_step</code><span class="sig-paren">(</span><em class="sig-param">module</em>, <em class="sig-param">step</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sasctl/_services/microanalytic_store.html#MicroAnalyticScore.get_module_step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl._services.microanalytic_store.MicroAnalyticScore.get_module_step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="sasctl._services.microanalytic_store.MicroAnalyticScore.list_module_steps">
+<code class="sig-name descname">list_module_steps</code><span class="sig-paren">(</span><em class="sig-param">module</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sasctl/_services/microanalytic_store.html#MicroAnalyticScore.list_module_steps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl._services.microanalytic_store.MicroAnalyticScore.list_module_steps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="sasctl._services.microanalytic_store.MicroAnalyticScore.list_modules">
+<code class="sig-name descname">list_modules</code><span class="sig-paren">(</span><em class="sig-param">filter=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sasctl/_services/microanalytic_store.html#MicroAnalyticScore.list_modules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sasctl._services.microanalytic_store.MicroAnalyticScore.list_modules" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">sasctl</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../sasctl.html">sasctl package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../sasctl.html#module-sasctl">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sasctl.html#submodules">Submodules</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../sasctl.html#subpackages">Subpackages</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Unreleased</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html#v1-0-0-2019-07-24">v1.0.0 (2019-07-24)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html#v0-9-7-2019-07-18">v0.9.7 (2019-07-18)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html#v0-9-6-2019-07-15">v0.9.6 (2019-07-15)</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../sasctl.html">sasctl package</a><ul>
+  <li><a href="../sasctl.services.html">sasctl.services package</a><ul>
+      <li>Previous: <a href="folders.html" title="previous chapter">sasctl.services.folders</a></li>
+      <li>Next: <a href="model_management.html" title="next chapter">sasctl.services.model_management</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/api/services/microanalytic_store.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

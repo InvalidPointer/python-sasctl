@@ -1,0 +1,359 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sasctl.tasks &#8212; sasctl 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for sasctl.tasks</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># encoding: utf-8</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved.</span>
+<span class="c1"># SPDX-License-Identifier: Apache-2.0</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">.utils.pymas</span> <span class="k">import</span> <span class="n">from_pickle</span><span class="p">,</span> <span class="n">PyMAS</span>
+<span class="kn">from</span> <span class="nn">sasctl.services</span> <span class="k">import</span> <span class="n">model_management</span> <span class="k">as</span> <span class="n">mm</span><span class="p">,</span> <span class="n">model_publish</span> <span class="k">as</span> <span class="n">mp</span><span class="p">,</span> \
+    <span class="n">model_repository</span> <span class="k">as</span> <span class="n">mr</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">.core</span> <span class="k">import</span> <span class="n">get</span><span class="p">,</span> <span class="n">get_link</span><span class="p">,</span> <span class="n">request_link</span><span class="p">,</span> <span class="n">RestObj</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_sklearn_to_dict</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="c1"># Convert Scikit-learn values to built-in Model Manager values</span>
+    <span class="n">mappings</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;LogisticRegression&#39;</span><span class="p">:</span> <span class="s1">&#39;Logistic regression&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;LinearRegression&#39;</span><span class="p">:</span> <span class="s1">&#39;Linear regression&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;SVC&#39;</span><span class="p">:</span> <span class="s1">&#39;Support vector machine&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;GradientBoostingClassifier&#39;</span><span class="p">:</span> <span class="s1">&#39;Gradient boosting&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;RandomForestClassifier&#39;</span><span class="p">:</span> <span class="s1">&#39;Forest&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;DecisionTreeClassifier&#39;</span><span class="p">:</span> <span class="s1">&#39;Decision tree&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;DecisionTreeRegressor&#39;</span><span class="p">:</span> <span class="s1">&#39;Decision tree&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;classifier&#39;</span><span class="p">:</span> <span class="s1">&#39;Classification&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;regressor&#39;</span><span class="p">:</span> <span class="s1">&#39;Prediction&#39;</span><span class="p">}</span>
+
+    <span class="c1"># Can tell if multi-class .multi_class</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="p">),</span>
+        <span class="n">algorithm</span><span class="o">=</span><span class="n">mappings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span>
+        <span class="n">scoreCodeType</span><span class="o">=</span><span class="s1">&#39;ds2MultiType&#39;</span><span class="p">,</span>
+        <span class="n">trainCodeType</span><span class="o">=</span><span class="s1">&#39;Python&#39;</span><span class="p">,</span>
+        <span class="n">function</span><span class="o">=</span><span class="n">mappings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">_estimator_type</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">_estimator_type</span><span class="p">),</span>
+        <span class="n">tool</span><span class="o">=</span><span class="s1">&#39;Python </span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">minor</span><span class="p">),</span>
+        <span class="n">properties</span><span class="o">=</span><span class="p">[{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">k</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">v</span><span class="p">}</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">get_params</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<div class="viewcode-block" id="register_model"><a class="viewcode-back" href="../../api/sasctl.html#sasctl.tasks.register_model">[docs]</a><span class="k">def</span> <span class="nf">register_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">repository</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">input</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;latest&#39;</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Register a model in the model repository.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model : swat.CASTable or sklearn.BaseEstimator</span>
+<span class="sd">        The model to register.  If an instance of ``swat.CASTable`` the table is assumed to hold an ASTORE, which will</span>
+<span class="sd">        be downloaded and used to construct the model to register.  If a scikit-learn estimator, the model will be</span>
+<span class="sd">        pickled and uploaded to the registry and score code will be generated for publishing the model to MAS.</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Designated name for the model in the repository.</span>
+<span class="sd">    project : str or dict</span>
+<span class="sd">        The name or id of the project, or a dictionary representation of the project.</span>
+<span class="sd">    repository : str or dict, optional</span>
+<span class="sd">        The name or id of the repository, or a dictionary representation of the repository.  If omitted, the default</span>
+<span class="sd">        repository will be used.</span>
+<span class="sd">    input</span>
+<span class="sd">    version : {&#39;new&#39;, &#39;latest&#39;, int}, optional</span>
+<span class="sd">        Version number of the project in which the model should be created.</span>
+<span class="sd">    files :</span>
+<span class="sd">    force : bool, optional</span>
+<span class="sd">        Create dependencies such as projects and repositories if they do not already exist.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    model : RestObj</span>
+<span class="sd">        The newly registered model as an instance of ``RestObj``</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If the specified model is a CAS table the model data and metadata will be written to a temporary zip file and then</span>
+<span class="sd">    imported using model_repository.import_model_from_zip.</span>
+
+<span class="sd">    If the specified model is from the Scikit-Learn package, the model will be created using</span>
+<span class="sd">    model_repository.create_model and any additional files will be uploaded as content.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># TODO: Create new version if model already exists</span>
+    <span class="c1"># TODO: Allow file info to be specified</span>
+    <span class="c1"># TODO: Performance stats</span>
+
+    <span class="n">files</span> <span class="o">=</span> <span class="n">files</span> <span class="ow">or</span> <span class="p">[]</span>
+
+    <span class="c1"># Find the project if it already exists</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">mr</span><span class="o">.</span><span class="n">get_project</span><span class="p">(</span><span class="n">project</span><span class="p">)</span> <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="c1"># Do we need to create the project first?</span>
+    <span class="n">create_project</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">force</span> <span class="k">else</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">create_project</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Project &#39;</span><span class="si">{}</span><span class="s2">&#39; not found&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="p">))</span>
+
+    <span class="n">repository</span> <span class="o">=</span> <span class="n">mr</span><span class="o">.</span><span class="n">default_repository</span><span class="p">()</span> <span class="k">if</span> <span class="n">repository</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">mr</span><span class="o">.</span><span class="n">get_repository</span><span class="p">(</span><span class="n">repository</span><span class="p">)</span>
+
+    <span class="c1"># Unable to find or create the repo.</span>
+    <span class="k">if</span> <span class="n">repository</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unable to find repository &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">repository</span><span class="p">))</span>
+
+    <span class="c1"># If model is a CASTable then assume it holds an ASTORE model.</span>
+    <span class="c1"># Import these via a ZIP file.</span>
+    <span class="k">if</span> <span class="s1">&#39;swat.cas.table.CASTable&#39;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)):</span>
+        <span class="n">zipfile</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">create_package_from_astore</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">create_project</span><span class="p">:</span>
+            <span class="n">project</span> <span class="o">=</span> <span class="n">mr</span><span class="o">.</span><span class="n">create_project</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">repository</span><span class="p">)</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="n">mr</span><span class="o">.</span><span class="n">import_model_from_zip</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">zipfile</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">model</span>
+
+    <span class="c1"># If the model is an scikit-learn model, generate the model dictionary</span>
+    <span class="c1"># from it and pickle the model for storage</span>
+    <span class="k">elif</span> <span class="nb">all</span><span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;_estimator_type&#39;</span><span class="p">,</span> <span class="s1">&#39;get_params&#39;</span><span class="p">]):</span>
+        <span class="c1"># Pickle the model so we can store it</span>
+        <span class="n">model_pkl</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+        <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;model.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;file&#39;</span><span class="p">:</span> <span class="n">model_pkl</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="s1">&#39;Python Pickle&#39;</span><span class="p">})</span>
+
+        <span class="c1"># Extract model properties</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">_sklearn_to_dict</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+        <span class="n">model</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+
+        <span class="c1"># Generate PyMAS wrapper</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">mas_module</span> <span class="o">=</span> <span class="n">from_pickle</span><span class="p">(</span><span class="n">model_pkl</span><span class="p">,</span> <span class="s1">&#39;predict&#39;</span><span class="p">,</span> <span class="n">input_types</span><span class="o">=</span><span class="nb">input</span><span class="p">,</span> <span class="n">array_input</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mas_module</span><span class="p">,</span> <span class="n">PyMAS</span><span class="p">)</span>
+
+            <span class="c1"># Include score code files from ESP and MAS</span>
+            <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;dmcas_packagescorecode.sas&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;file&#39;</span><span class="p">:</span> <span class="n">mas_module</span><span class="o">.</span><span class="n">score_code</span><span class="p">(),</span>
+                          <span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="s1">&#39;Score Code&#39;</span><span class="p">})</span>
+            <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;dmcas_espscorecode.sas&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;file&#39;</span><span class="p">:</span> <span class="n">mas_module</span><span class="o">.</span><span class="n">score_code</span><span class="p">(</span><span class="n">dest</span><span class="o">=</span><span class="s1">&#39;ESP&#39;</span><span class="p">),</span>
+                          <span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="s1">&#39;Score Code&#39;</span><span class="p">})</span>
+
+            <span class="n">model</span><span class="p">[</span><span class="s1">&#39;inputVariables&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">var</span><span class="o">.</span><span class="n">as_model_metadata</span><span class="p">()</span>
+                                       <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">mas_module</span><span class="o">.</span><span class="n">variables</span>
+                                       <span class="k">if</span> <span class="ow">not</span> <span class="n">var</span><span class="o">.</span><span class="n">out</span><span class="p">]</span>
+
+            <span class="n">model</span><span class="p">[</span><span class="s1">&#39;outputVariables&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">var</span><span class="o">.</span><span class="n">as_model_metadata</span><span class="p">()</span>
+                                        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">mas_module</span><span class="o">.</span><span class="n">variables</span>
+                                        <span class="k">if</span> <span class="n">var</span><span class="o">.</span><span class="n">out</span>
+                                        <span class="ow">and</span> <span class="n">var</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;rc&#39;</span><span class="p">,</span> <span class="s1">&#39;msg&#39;</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="c1"># PyMAS creation failed, most likely because input data wasn&#39;t</span>
+            <span class="c1"># provided</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Unable to determine input/output variables. &#39;</span>
+                          <span class="s1">&#39; Model variables will not be specified.&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Otherwise, the model better be a dictionary of metadata</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">create_project</span><span class="p">:</span>
+        <span class="nb">vars</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;inputVariables&#39;</span><span class="p">,</span> <span class="p">[])</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;outputVariables&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">target_level</span> <span class="o">=</span> <span class="s1">&#39;Interval&#39;</span> <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;Regression&#39;</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">project</span> <span class="o">=</span> <span class="n">mr</span><span class="o">.</span><span class="n">create_project</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">repository</span><span class="p">,</span>
+                                    <span class="n">variables</span><span class="o">=</span><span class="nb">vars</span><span class="p">,</span>
+                                    <span class="n">targetLevel</span><span class="o">=</span><span class="n">target_level</span><span class="p">)</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">mr</span><span class="o">.</span><span class="n">create_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">RestObj</span><span class="p">)</span>
+
+    <span class="c1"># Upload any additional files</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">mr</span><span class="o">.</span><span class="n">add_model_content</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">**</span><span class="n">file</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mr</span><span class="o">.</span><span class="n">add_model_content</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">model</span></div>
+
+
+<div class="viewcode-block" id="publish_model"><a class="viewcode-back" href="../../api/sasctl.html#sasctl.tasks.publish_model">[docs]</a><span class="k">def</span> <span class="nf">publish_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Publish a model to a configured publishing destination.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model : str or dict</span>
+<span class="sd">        The name or id of the model, or a dictionary representation of the model.</span>
+<span class="sd">    destination : str</span>
+<span class="sd">    code : optional</span>
+<span class="sd">    max_retries : int, optional</span>
+<span class="sd">    kwargs : optional</span>
+<span class="sd">        additional arguments will be passed to the underlying publish functions.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If no code is specified, the model is assumed to be already registered in the model repository and Model Manager&#39;s</span>
+<span class="sd">    publishing functionality will be used.</span>
+
+<span class="sd">    Otherwise, the model publishing API will be used.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    :meth:`model_management.publish_model &lt;.ModelManagement.publish_model&gt;`</span>
+<span class="sd">    :meth:`model_publish.publish_model &lt;.ModelPublish.publish_model&gt;`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Submit a publishing request</span>
+    <span class="k">if</span> <span class="n">code</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">publish_req</span> <span class="o">=</span> <span class="n">mm</span><span class="o">.</span><span class="n">publish_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">publish_req</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">publish_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># A successfully submitted request doesn&#39;t mean a successfully published model.</span>
+    <span class="c1"># Response for publish request includes link to check publish log</span>
+    <span class="n">job</span> <span class="o">=</span> <span class="n">mr</span><span class="o">.</span><span class="n">_monitor_job</span><span class="p">(</span><span class="n">publish_req</span><span class="p">)</span>
+    <span class="c1"># log = mr._monitor_job(request_link(publish_req, &#39;publishingLog&#39;),</span>
+    <span class="c1">#                       &#39;self&#39;,</span>
+    <span class="c1">#                       lambda x: x.get(&#39;log&#39;, &#39;&#39;).upper().startswith(&#39;SUCCESS===&#39;))</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="n">request_link</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="s1">&#39;publishingLog&#39;</span><span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;SUCCESS===&#39;</span><span class="p">)</span>
+
+    <span class="c1"># As of Viya 3.4 MAS converts module names to lower case.</span>
+    <span class="c1"># Since we can&#39;t rely on the request module name being preserved, try to parse the URL out of the response</span>
+    <span class="c1"># so we can retrieve the created module.</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">module_url</span> <span class="o">=</span> <span class="n">get_link</span><span class="p">(</span><span class="n">details</span><span class="p">,</span> <span class="s1">&#39;module&#39;</span><span class="p">)</span>
+        <span class="n">module_url</span> <span class="o">=</span> <span class="n">module_url</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?:rel=module, href=(.*?),)&#39;</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="n">module_url</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">match</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">module_url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Unable to retrieve module URL from publish log.&#39;</span><span class="p">)</span>
+
+    <span class="n">module</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">module_url</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s1">&#39;application/vnd.sas.microanalytic.module&#39;</span> <span class="ow">in</span> <span class="n">module</span><span class="o">.</span><span class="n">_headers</span><span class="p">[</span>
+        <span class="s1">&#39;content-type&#39;</span><span class="p">]:</span>
+        <span class="c1"># Bind Python methods to the module instance that will execute the</span>
+        <span class="c1"># corresponding MAS module step.</span>
+        <span class="kn">from</span> <span class="nn">sasctl.services</span> <span class="k">import</span> <span class="n">microanalytic_score</span> <span class="k">as</span> <span class="n">mas</span>
+        <span class="k">return</span> <span class="n">mas</span><span class="o">.</span><span class="n">define_steps</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">module</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">sasctl</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/sasctl.html">sasctl package</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html">Unreleased</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html#v1-0-0-2019-07-24">v1.0.0 (2019-07-24)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html#v0-9-7-2019-07-18">v0.9.7 (2019-07-18)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases.html#v0-9-6-2019-07-15">v0.9.6 (2019-07-15)</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;Copyright © 2019, SAS Institute Inc., Cary, NC, USA.  All Rights Reserved..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
